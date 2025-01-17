@@ -68,9 +68,9 @@ struct {
 
 
 
-#define Motor_1_EN  2  // D4
-#define Motor_1_in1 4  // D2
-#define Motor_1_in2 5  // D1
+#define Motor_1_EN  2   // D4
+#define Motor_1_in1 14  // D2
+#define Motor_1_in2 27  // D1
 
 
 #define Motor_2_EN  14  // D5
@@ -78,8 +78,8 @@ struct {
 #define Motor_2_in2 13  // D7
 
 
-#define Servo_in1 16   //D0
-#define Servo_in2 15  //D8
+#define Servo_in1 18   //D0
+#define Servo_in2 19   //D8
 
 #define Micro_Adjustment 100
 
