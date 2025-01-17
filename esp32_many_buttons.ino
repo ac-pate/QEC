@@ -68,20 +68,20 @@ struct {
 
 
 
-#define Motor_1_EN  2   // D4
-#define Motor_1_in1 14  // D2
-#define Motor_1_in2 27  // D1
+#define Motor_1_EN  2  // D4
+#define Motor_1_in1 4  // D2
+#define Motor_1_in2 5  // D1
 
 
 #define Motor_2_EN  14  // D5
 #define Motor_2_in1 12  // D6
 #define Motor_2_in2 13  // D7
 
-
+#define Lift_EN 2 
 #define Servo_in1 18   //D0
 #define Servo_in2 19   //D8
 
-#define Micro_Adjustment 100
+#define Micro_Adjustment 50
 
 void setup() {
   RemoteXY_Init (); 
@@ -121,12 +121,12 @@ void Handler(int val2, int val1, int ctr_val, int lft, int rgt) {
 
 //********** Turning Slider **********//
   // Priority to val2 for turning
-  if (val2 > 0) {  // Turn right
+  if (val2 < 0) {  // Turn right
     forward_motor1(speed2);    // Motor 1 moves forward
     backward_motor2(speed2);   // Motor 2 moves backward
     Serial.println("Turn right");
   } 
-  else if (val2 < 0) {  // Turn left
+  else if (val2 > 0) {  // Turn left
     backward_motor1(speed2);   // Motor 1 moves backward
     forward_motor2(speed2);    // Motor 2 moves forward
     Serial.println("Turn Left");
@@ -151,14 +151,23 @@ void Handler(int val2, int val1, int ctr_val, int lft, int rgt) {
   }
   
 
-//********** Micro Adjustment **********//
+// //********** Micro Adjustment **********//
   if (lft && !rgt){
-    backward_motor1(Micro_Adjustment);   // Motor 1 moves backward
-    forward_motor2(Micro_Adjustment);    // Motor 2 moves forward
+    
+      forward_motor1(Micro_Adjustment);    // Motor 1 moves forward
+      backward_motor2(Micro_Adjustment);   // Motor 2 moves backward
+      delay(50);
+      stopMotors();
+      delay(100);
 
   }else if(!lft && rgt){
-    forward_motor1(Micro_Adjustment);    // Motor 1 moves forward
-    backward_motor2(Micro_Adjustment);   // Motor 2 moves backward
+   
+      backward_motor1(Micro_Adjustment);   // Motor 1 moves backward
+      forward_motor2(Micro_Adjustment);    // Motor 2 moves forward
+      delay(50);
+      stopMotors();
+      delay(100);
+    
 
   }else {
     stopMotors();
@@ -244,12 +253,14 @@ void stop_lift_motor() {
 
 void cw() {
    // Set PWM speed for motor 2
+  analogWrite(Lift_EN, 170);
   digitalWrite(Servo_in1, LOW);    // Forward direction for motor 2
   digitalWrite(Servo_in2, HIGH);
 }
 
 void ccw() {
     // Set PWM speed for motor 2
+  analogWrite(Lift_EN, 170);
   digitalWrite(Servo_in1, HIGH);   // Backward direction for motor 2
   digitalWrite(Servo_in2, LOW);
 }
